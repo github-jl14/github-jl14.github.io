@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Encoder</title>
+<style>
+  body {
+    background-color: #121212;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  #text-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+  }
+  #encode-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  #encoded-output {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+<h1>Encoder</h1>
+<input type="text" id="text-input" placeholder="Enter series of numbers">
+<button id="encode-button">Encode</button>
+<textarea id="encoded-output" placeholder="Encoded text will appear here" readonly></textarea>
+
+<script>
+  // JSON list for encoding
+  const encodingList = {
+    "00000000": "p",
+    "00000010": "q",
+    "01000000": "w",
+    "00100000": "e",
+    "00000100": "r",
+    "00010000": "t",
+    "00001000": "y",
+    "10000000": "u",
+    "10000010": "i",
+    "11000000": "o"
+  };
+
+  // Function to convert numbers to letters
+  function convertNumbersToLetters(input) {
+    const numberToLetterMap = {
+      '1': 'q',
+      '2': 'w',
+      '3': 'e',
+      '4': 'r',
+      '5': 't',
+      '6': 'y',
+      '7': 'u',
+      '8': 'i',
+      '9': 'o',
+      '0': 'p'
+    };
+
+    return input.replace(/\d/g, match => numberToLetterMap[match]);
+  }
+
+  // Function to encode text using the provided encoding list
+  function encodeText(text) {
+    let encodedText = '';
+    for (let i = 0; i < text.length; i++) {
+      let char = text[i];
+      for (let key in encodingList) {
+        if (encodingList[key] === char) {
+          encodedText += key + ' ';
+          break;
+        }
+      }
+    }
+    return encodedText.trim();
+  }
+
+  // Function to handle click event on encode button
+  function handleEncodeButtonClick() {
+    const textInput = document.getElementById('text-input').value;
+    const encodedOutput = document.getElementById('encoded-output');
+    const textWithLetters = convertNumbersToLetters(textInput);
+    encodedOutput.value = encodeText(textWithLetters);
+  }
+
+  // Dark mode toggle
+  document.body.classList.toggle('dark-mode');
+
+  // Event listener for encode button click
+  document.getElementById('encode-button').addEventListener('click', handleEncodeButtonClick);
+</script>
+</body>
+</html>
