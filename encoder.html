@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code 1</title>
+    
+    <style>
+        #cont {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the divs horizontally */
+            justify-content: center; /* Center the divs vertically */
+            height: 100vh; /* Set the height of the container to full viewport height */
+            position: relative;
+        }
+
+        .box {
+            height: 26vw;
+            width: 7vw;
+            background-color: black;
+            position: absolute;
+        }
+
+        #a {
+            transform: rotate(45deg);
+            left: 33.2vw;
+            top: 61.6vw;
+        }
+
+        #b {
+            transform: rotate(-45deg);
+            right: 19.5vw;
+            top: 75.251vw;
+        }
+
+        #c {
+            transform: rotate(45deg);
+            right: 33.2vw;
+            top: 112.53vw;
+        }
+
+        #d {
+            transform: rotate(-45deg);
+            left: 19.5vw;
+            top: 99vw;
+        }
+
+        #e, #f {
+            height: 60vw;
+            width: 7vw;
+            background-color: black;
+        }
+
+        #e {
+            transform: rotate(45deg);
+        }
+
+        #f {
+            transform: rotate(-45deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cont">
+        <div class="box" id="a"></div>
+        <div class="box" id="b"></div>
+        <div class="box" id="c"></div>
+        <div class="box" id="d"></div>
+        <div class="box" id="e"></div>
+        <div class="box" id="f"></div>
+    </div>
+</body>
+</html>
