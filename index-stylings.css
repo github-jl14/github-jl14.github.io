@@ -1,0 +1,20 @@
+body {
+  background-color: #000;
+}
+
+div {
+  border: 1px dashed red;
+}
+
+#bg {
+  height: 35vh;
+}
+
+#bg-img {
+  height: inherit;
+}
+
+#ham {
+  margin: 5px 0 0 5px;
+  color: royalblue;
+}
