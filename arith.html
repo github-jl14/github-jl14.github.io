@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+
+<script>
+  // Store used step values to ensure uniqueness
+const usednums = []
+
+function step(){
+    var cd = Math.round(Math.random() * (20 - (-20)) + (-20));
+    return cd;
+} // Generates num from -20 to 20
+
+var l = 5 // desired arith seq. length
+
+// Input a1s (first term)
+var a = [12]
+var b = [26]
+var c = [9]
+var d = [31]
+var e = [3]
+
+function seq(arr) {
+  var s = step()
+    var len = arr.length
+    do {
+        s = step;
+    } while(usednums.includes(s))
+    
+    usednums.push(s)
+    
+    do {
+        var nextterm = arr[len - 1] + s
+        arr.push(nextterm)
+        len = arr.length
+    } while(len < l)
+    
+    console.log( arr + " d = " + s ) // show result
+}
+
+// Run
+seq(a)
+seq(b)
+seq(c)
+seq(d)
+seq(e)
+
+console.info("Program Finished.")
+console.info("--- Debug Logs ---")
+console.info("`usednums` => " + usednums)
+
+// ToDo: mass run all sets
+</script>
+</body>
+
+</html>
