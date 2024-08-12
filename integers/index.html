@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Integer Test</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <p id="q">Choose a Mode</p>
+  
+  <button id="btn1" style="display: none"></button>
+  <button id="btn2" style="display: none"></button>
+  <button id="btn3" style="display: none"></button>
+  <button id="btn4" style="display: none"></button>
+  
+  <button id="continue" style="display: none;">Continue</button>
+  
+  <button disabled id="multipleChoiceButton" onclick="start()">Multiple Choice</button>
+  <button id="oralMathButton">Oral Math</button>
+  
+  <div id="oralOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; color: white; justify-content: center; align-items: center; flex-direction: column;">
+  </div>
+  
+  <script src="functions.js"></script>
+  <script>
+    function start() {
+      document.getElementById("btn1").style.display = "block";
+      document.getElementById("btn2").style.display = "block";
+      document.getElementById("btn3").style.display = "block";
+      document.getElementById("btn4").style.display = "block";
+     // document.getElementById("btn1").style.display = block;
+    }
+  </script>
+</body>
+
+</html>
