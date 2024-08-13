@@ -26,9 +26,9 @@ function startTest() {
 
 function generateQuestionMultipleChoice() {
     questionCount++;
-    const num1 = getRandomInt(-10, 10);
-    const num2 = getRandomInt(-10, 10);
-    const rand = getRandomInt(-10, 10);
+    const num1 = getRandomInt(-15, 5);
+    const num2 = getRandomInt(-15, 5);
+    const rand = getRandomInt(-15, 5);
     const operation = getRandomOperation();
     correctAnswer = calculateAnswer(num1, num2, operation);
     questionText = formatQuestion(num1, num2, operation);
@@ -54,9 +54,9 @@ function generateQuestionMultipleChoice() {
 
 function generateQuestionOralMath() {
     questionCount++;
-    const num1 = getRandomInt(-10, 10);
-    const num2 = getRandomInt(-10, 10);
-    const rand = getRandomInt(-10, 10);
+    const num1 = getRandomInt(-15, 5);
+    const num2 = getRandomInt(-15, 5);
+    const rand = getRandomInt(-15, 5);
     const operation = getRandomOperation();
     correctAnswer = calculateAnswer(num1, num2, rand, operation);
     questionText = formatQuestion(num1, num2, rand, operation);
@@ -174,9 +174,9 @@ function getRandomInt(min, max) {
     
     if (r == 0) {
       if (new Date().getSeconds % 2 == 1) {
-        r = r + new Date().getMonth() + 1 * -1;
+        r = r + new Date().getSeconds() % 10 + 1 * -1;
       } else {
-        r = r + new Date().getMonth() + 1
+        r = r + new Date().getSeconds() % 10 + 1
       }
     }
     
@@ -184,8 +184,8 @@ function getRandomInt(min, max) {
 }
 
 function getRandomOperation() {
-    //const operations = ['+', '-', '*', '/', '/'];
-    const operations = ['-', '/']
+    const operations = ['+', '-', '*', '/'];
+    // const operations = ['-', '/']
     return operations[Math.floor(Math.random() * operations.length)];
 }
 
