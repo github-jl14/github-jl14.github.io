@@ -64,7 +64,7 @@ function generateQuestionOralMath() {
     // Display the question
     document.getElementById("oralOverlay").innerHTML = `
         <div id="timer" style="font-size: 4.5rem; color: green;">Ready</div>
-        <div id="question" style="font-size: 20vw; color: white; text-align: center; margin: auto;">${questionText}</div>
+        <div id="question" style="font-size: 20vw; color: white; text-align: center; margin: auto; color: #FF7000;">${questionText}</div>
         <div id="answer" style="font-size: 5rem; color: red; text-align: center; display: none; position: fixed"></div>
     `;
 
@@ -133,7 +133,7 @@ function formatQuestion(num1, num2, rand, operation) {
             return `(${num1})(${num2})`;
         case '/':
             num2 = num1 * rand;
-            return `${num2} / ${num1}`;
+            return `${num2} ÷ ${num1}`;
     }
 }
 
@@ -184,7 +184,8 @@ function getRandomInt(min, max) {
 }
 
 function getRandomOperation() {
-    const operations = ['+', '-', '*', '*', '/', '/'];
+    //const operations = ['+', '-', '*', '/', '/'];
+    const operations = ['-', '/']
     return operations[Math.floor(Math.random() * operations.length)];
 }
 

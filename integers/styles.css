@@ -3,10 +3,34 @@ button {
   width: 40vw;
   margin: 10px;
   margin-top: 45vw;
+  color: #FF7000;
+}
+
+#multipleChoiceButton {
+  text-decoration: line-through;
+}
+
+#q {
+  margin-top: 20vh;
 }
 
 body {
   background-color: black;
   color: white;
   text-align: center;
+  color: #FF7000;
+}
+
+#timer {
+  margin-top: 30vh;
+  position: absolute;
+}
+
+#question {
+  position: absolute;
+}
+
+#answer {  
+  position: absolute;
+  margin-top: -25vh;
 }
