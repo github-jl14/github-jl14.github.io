@@ -1,6 +1,6 @@
 # github-jl14.github.io
 
 
-- Integer
+- Integer Practice
 
-  https://github-jl14.github.io/integer
+  https://github-jl14.github.io/integers
