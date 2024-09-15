@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folder Access</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .login-box, .content-box { text-align: center; margin-top: 50px; }
+        input[type="text"] { padding: 10px; width: 80%; margin-bottom: 10px; }
+        button { padding: 10px 20px; cursor: pointer; }
+        .image-grid { display: none; flex-wrap: wrap; gap: 10px; }
+        .image-grid img { width: 200px; height: 150px; object-fit: cover; }
+        .notice { margin-top: 20px; padding: 10px; border: 1px solid #ccc; display: none; }
+    </style>
+</head>
+<body>
+
+<h1>Enter Access Key</h1>
+<div class="login-box">
+    <input type="text" id="accessKey" placeholder="7-character key">
+    <button onclick="login()">Submit</button>
+</div>
+
+<div class="content-box">
+    <h2>Folder: <span id="folderName"></span></h2>
+    <div class="image-grid" id="imageGrid"></div>
+    <div class="notice" id="notice"></div>
+</div>
+
+<script>
+    const folderName = window.location.pathname.split('/').pop();
+    document.getElementById('folderName').innerText = folderName;
+
+    function login() {
+        const enteredKey = document.getElementById('accessKey').value;
+
+        // Fetch the correct key for this folder from the ans/keys folder
+        fetch(`/ans/keys/${folderName}.txt`)
+            .then(response => response.text())
+            .then(correctKey => {
+                if (enteredKey === correctKey.trim()) {
+                    displayFolderContents();
+                } else {
+                    alert('Invalid access key!');
+                }
+            });
+    }
+
+    function displayFolderContents() {
+        document.querySelector('.login-box').style.display = 'none';
+        document.querySelector('.content-box').style.display = 'block';
+        document.querySelector('.image-grid').style.display = 'flex';
+        document.querySelector('.notice').style.display = 'block';
+
+        // Load images (replace with actual image file names inside the folder)
+        const images = ["pic.jpg", "pic2.jpg", "pic3.jpg"];
+        const imageGrid = document.getElementById('imageGrid');
+
+        images.forEach(img => {
+            const imgElem = document.createElement('img');
+            imgElem.src = `${folderName}/${img}`;
+            imageGrid.appendChild(imgElem);
+        });
+
+        // Load notice.txt
+        fetch(`${folderName}/notice.txt`)
+            .then(response => response.text())
+            .then(text => {
+                document.getElementById('notice').innerText = text;
+            });
+    }
+</script>
+
+</body>
+</html>

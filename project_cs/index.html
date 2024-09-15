@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filesystem</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 10px 0; }
+        a { text-decoration: none; color: blue; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<h1>Available Folders</h1>
+<ul id="folderList"></ul>
+
+<script>
+// Define the folders manually (since GitHub Pages doesn't support dynamic backend logic)
+const folders = ['091524']; // Replace with actual folder names inside 'ans'
+
+const folderList = document.getElementById('folderList');
+folders.forEach(folder => {
+    const listItem = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `safezone/${folder}`;
+    link.innerText = folder;
+    listItem.appendChild(link);
+    folderList.appendChild(listItem);
+});
+</script>
+
+</body>
+</html>
