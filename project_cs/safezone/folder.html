@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<h1>Enter Access Key</h1>
+<h1><p id="header">Enter Access Key</p></h1>
 <div class="login-box">
     <input type="text" id="accessKey" placeholder="7-character key">
     <button onclick="login()">Submit</button>
@@ -29,37 +29,51 @@
 </div>
 
 <script>
-    const folderName = window.location.pathname.split('/').pop();
+    // Get the folder name from the URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const folderName = urlParams.get('name');
+    
     document.getElementById('folderName').innerText = folderName;
 
+    function cleanKey(key) {
+        // Ensure no hidden characters, and trim whitespaces
+        return key.replace(/[\r\n]+/gm, '').trim();
+    }
+
     function login() {
-        const enteredKey = document.getElementById('accessKey').value;
+        const enteredKey = cleanKey(document.getElementById('accessKey').value); // Clean the entered key
+
+        console.log("Entered Key: ", enteredKey);  // Log the entered key for debugging
 
         // Fetch the correct key for this folder from the ans/keys folder
-        fetch(`/ans/keys/${folderName}.txt`)
+        fetch(`../ans/keys/${folderName}.txt`)
             .then(response => response.text())
             .then(correctKey => {
-                if (enteredKey === correctKey.trim()) {
-                    displayFolderContents();
+                const cleanCorrectKey = cleanKey(correctKey);  // Clean the fetched key
+                console.log("Correct Key: ", cleanCorrectKey);  // Log the correct key for debugging
+
+                if (enteredKey === cleanCorrectKey) {
+                    displayFolderContents(folderName); // Pass folderName to load contents
+                    document.getElementById("header").innerText = `Answers for ${folderName}`
                 } else {
                     alert('Invalid access key!');
                 }
             });
     }
 
-    function displayFolderContents() {
+    function displayFolderContents(folderName) {
         document.querySelector('.login-box').style.display = 'none';
         document.querySelector('.content-box').style.display = 'block';
         document.querySelector('.image-grid').style.display = 'flex';
         document.querySelector('.notice').style.display = 'block';
 
         // Load images (replace with actual image file names inside the folder)
-        const images = ["pic.jpg", "pic2.jpg", "pic3.jpg"];
+        const images = ["pic.jpg", "pic2.jpg", "pic3.jpg"];  // Replace with actual filenames
         const imageGrid = document.getElementById('imageGrid');
 
         images.forEach(img => {
             const imgElem = document.createElement('img');
-            imgElem.src = `${folderName}/${img}`;
+            imgElem.src = `${folderName}/${img}`;  // Use folderName in the image path
             imageGrid.appendChild(imgElem);
         });
 
@@ -70,6 +84,8 @@
                 document.getElementById('notice').innerText = text;
             });
     }
+
+    console.log("Folder Name: ", folderName); // Log folder name for debugging
 </script>
 
 </body>

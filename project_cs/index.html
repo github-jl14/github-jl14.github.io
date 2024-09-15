@@ -25,7 +25,7 @@ const folderList = document.getElementById('folderList');
 folders.forEach(folder => {
     const listItem = document.createElement('li');
     const link = document.createElement('a');
-    link.href = `safezone/${folder}`;
+    link.href = `safezone/folder.html?name=${folder}`;
     link.innerText = folder;
     listItem.appendChild(link);
     folderList.appendChild(listItem);
