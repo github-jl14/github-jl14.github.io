@@ -10,15 +10,68 @@
         input[type="text"] { padding: 10px; width: 80%; margin-bottom: 10px; }
         button { padding: 10px 20px; cursor: pointer; }
         .image-grid { display: none; flex-wrap: wrap; gap: 10px; }
-        .image-grid img { width: 200px; height: 150px; object-fit: cover; }
+        .image-grid img { width: 200px; height: 150px; object-fit: cover; cursor: pointer; }
         .notice { margin-top: 20px; padding: 10px; border: 1px solid #ccc; display: none; }
+
+        /* Modal styles */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.8); 
+            justify-content: center; 
+            align-items: center;
+        }
+        .modal-content { 
+            position: relative; 
+            max-width: 90vw; 
+            max-height: 90vh; 
+            margin: auto; 
+            background: #fff;
+        }
+        .modal-content img { 
+            width: 100%; 
+            height: auto; 
+        }
+        .close { 
+            position: absolute; 
+            top: 10px; 
+            right: 25px; 
+            color: #fff; 
+            font-size: 35px; 
+            font-weight: bold; 
+            cursor: pointer;
+        }
+        .modal-content button { 
+            position: absolute; 
+            top: 50%; 
+            background: rgba(0,0,0,0.6); 
+            color: #fff; 
+            border: none; 
+            padding: 10px; 
+            cursor: pointer;
+        }
+        .prev { 
+            left: 0;
+            position: absolute;
+            opacity: 50%;
+        }
+        .next { 
+            right: -5; 
+            opacity: 50%;
+        }
     </style>
 </head>
 <body>
 
 <h1><p id="header">Enter Access Key</p></h1>
 <div class="login-box">
-    <input type="text" id="accessKey" placeholder="7-character key">
+    <input type="number" id="accessKey" placeholder="7-character key">
     <button onclick="login()">Submit</button>
 </div>
 
@@ -28,32 +81,36 @@
     <div class="notice" id="notice"></div>
 </div>
 
+<!-- Modal for images -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <button class="prev" onclick="changeImage(-1)">&#10094;</button>
+        <img id="modalImage" src="">
+        <button class="next" onclick="changeImage(1)">&#10095;</button>
+    </div>
+</div>
+
 <script>
-    // Get the folder name from the URL parameter
     const urlParams = new URLSearchParams(window.location.search);
     const folderName = urlParams.get('name');
     
     document.getElementById('folderName').innerText = folderName;
 
     function cleanKey(key) {
-        // Ensure no hidden characters, and trim whitespaces
         return key.replace(/[\r\n]+/gm, '').trim();
     }
 
     function login() {
-        const enteredKey = cleanKey(document.getElementById('accessKey').value); // Clean the entered key
+        const enteredKey = cleanKey(document.getElementById('accessKey').value);
 
-        console.log("Entered Key: ", enteredKey);  // Log the entered key for debugging
-
-        // Fetch the correct key for this folder from the ans/keys folder
         fetch(`../ans/keys/${folderName}.txt`)
             .then(response => response.text())
             .then(correctKey => {
-                const cleanCorrectKey = cleanKey(correctKey);  // Clean the fetched key
-                console.log("Correct Key: ", cleanCorrectKey);  // Log the correct key for debugging
+                const cleanCorrectKey = cleanKey(correctKey);
 
                 if (enteredKey === cleanCorrectKey) {
-                    displayFolderContents(folderName); // Pass folderName to load contents
+                    displayFolderContents(folderName);
                     document.getElementById("header").innerText = `Answers inside /${folderName}`
                 } else {
                     alert('Invalid access key!');
@@ -67,17 +124,18 @@
         document.querySelector('.image-grid').style.display = 'flex';
         document.querySelector('.notice').style.display = 'block';
 
-        // Load images (replace with actual image file names inside the folder)
         const images = ["pic.jpg", "pic2.jpg", "pic3.jpg"];  // Replace with actual filenames
         const imageGrid = document.getElementById('imageGrid');
+        
+        imageGrid.innerHTML = ''; // Clear any existing images
 
-        images.forEach(img => {
+        images.forEach((img, index) => {
             const imgElem = document.createElement('img');
-            imgElem.src = `${folderName}/${img}`;  // Use folderName in the image path
+            imgElem.src = `${folderName}/${img}`;
+            imgElem.onclick = () => openModal(index);  // Set click event to open the modal
             imageGrid.appendChild(imgElem);
         });
 
-        // Load notice.txt
         fetch(`${folderName}/notice.txt`)
             .then(response => response.text())
             .then(text => {
@@ -85,7 +143,30 @@
             });
     }
 
-    console.log("Folder Name: ", folderName); // Log folder name for debugging
+    // Modal functionality
+    let currentImageIndex = 0;
+    const images = ["pic.jpg", "pic2.jpg", "pic3.jpg"];  // Replace with actual filenames
+
+    function openModal(index) {
+        currentImageIndex = index;
+        document.getElementById('modalImage').src = `${folderName}/${images[currentImageIndex]}`;
+        document.getElementById('myModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    function changeImage(direction) {
+        currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
+        document.getElementById('modalImage').src = `${folderName}/${images[currentImageIndex]}`;
+    }
+
+    window.onclick = function(event) {
+        if (event.target === document.getElementById('myModal')) {
+            closeModal();
+        }
+    }
 </script>
 
 </body>
