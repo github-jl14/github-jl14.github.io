@@ -4,7 +4,7 @@ on:
     paths:
       - safezone/**
 jobs:
-  generate-manifest: null
+  generate-manifest:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
