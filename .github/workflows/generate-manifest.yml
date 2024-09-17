@@ -1,11 +1,11 @@
 name: Generate Manifest
-'on':
+on:
   push:
     paths:
       - safezone/**
-  jobs:
-    generate-manifest: null
-    runs-on: ubuntu-latest
+jobs:
+  generate-manifest: null
+  runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
