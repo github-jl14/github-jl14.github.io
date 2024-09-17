@@ -1,53 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Folder Index</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        ul { list-style-type: none; padding: 0; }
-        li { margin: 10px 0; }
-        a { text-decoration: none; color: blue; }
-        a:hover { text-decoration: underline; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folder Index</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+    body {
+      padding: 20px;
+      height: 100vh;
+      margin: 0;
+      background-color: #282c34;
+      color: #61dafb;
+      font-family: 'Inconsolata', monospace;
+      text-align: left;
+      padding: 20px;
+    }
+
+    a {
+      color: #61dafb;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+  </style>
 </head>
+
 <body>
 
-<h1>Available Folders</h1>
-<ul id="folderList"></ul>
+  <h1>Available Folders</h1>
+  <ul id="folderList"></ul>
 
-<script>
-async function loadFolders() {
-    try {
+  <script>
+    async function loadFolders() {
+      try {
         // Fetch the folder-manifest.json file
         const response = await fetch('/folder-manifest.json');
         if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
+          throw new Error('Network response was not ok ' + response.statusText);
         }
 
         const data = await response.json();
-        const folders = data.folders || [];  // Extract folders array or use empty array if not found
+        const folders = data.folders || []; // Extract folders array or use empty array if not found
 
         // Dynamically create list items for each folder
         const folderList = document.getElementById('folderList');
         folders.forEach(folder => {
-            const listItem = document.createElement('li');
-            const link = document.createElement('a');
-            link.href = `safezone/folder.html?name=${folder}`;
-            link.innerText = folder;
-            listItem.appendChild(link);
-            folderList.appendChild(listItem);
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = `safezone/folder.html?name=${folder}`;
+          link.innerText = folder;
+          listItem.appendChild(link);
+          folderList.appendChild(listItem);
         });
 
-    } catch (error) {
+      } catch (error) {
         console.error('Error loading folder manifest:', error.message);
+      }
     }
-}
 
-// Load the folders when the page loads
-loadFolders();
-</script>
+    // Load the folders when the page loads
+    loadFolders();
+  </script>
 
 </body>
+
 </html>
