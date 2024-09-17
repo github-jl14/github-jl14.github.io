@@ -104,7 +104,7 @@ function cleanKey(key) {
 function login() {
     const enteredKey = cleanKey(document.getElementById('accessKey').value);
 
-    fetch(`../ans/keys/${folderName}.txt`)
+    fetch("../ans/keys/workflow-test.txt")
         .then(response => response.text())
         .then(correctKey => {
             const cleanCorrectKey = cleanKey(correctKey);
@@ -125,7 +125,7 @@ function displayFolderContents(folderName) {
     document.querySelector('.notice').style.display = 'block';
 
     // Fetch the manifest.json file
-    fetch('manifest.json')
+    fetch('/manifest.json')
         .then(response => response.json())
         .then(data => {
             const images = data[folderName] || []; // Get image filenames from the manifest

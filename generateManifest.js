@@ -16,7 +16,7 @@ function getJpgFilesGroupedByFolder(dir) {
     const stat = fs.statSync(fullFolderPath);
 
     if (stat.isDirectory()) {
-      const jpgFiles = fs.readdirSync(fullFolderPath).filter(file => file.endsWith('.jpg'));
+      const jpgFiles = fs.readdirSync(fullFolderPath).filter(file => file.endsWith('.jpg', '.png'));
 
       if (jpgFiles.length > 0) {
         manifest[folder] = jpgFiles;
