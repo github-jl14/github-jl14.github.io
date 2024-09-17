@@ -5,8 +5,8 @@ on:
       - safezone/**
 jobs:
   generate-manifest: null
-  runs-on: ubuntu-latest
-  steps:
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Set up Node.js
