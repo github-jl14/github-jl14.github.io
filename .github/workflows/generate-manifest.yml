@@ -1,33 +1,26 @@
 name: Generate Manifest
-          
-          on:
-            push:
-              paths:
-                - 'safezone/**'  # Trigger the action only when changes are made inside the safezone folder
-          
-          jobs:
-            generate-manifest:
-              runs-on: ubuntu-latest
-          
-              steps:
-                - name: Checkout repository
-                  uses: actions/checkout@v2
-          
-                - name: Set up Node.js
-                  uses: actions/setup-node@v2
-                  with:
-                    node-version: '14'  # You can adjust the version
-          
-                - name: Install dependencies
-                  run: npm install  # If you have dependencies, otherwise remove this step
-          
-                - name: Generate manifest
-                  run: node generateManifest.js
-          
-                - name: Commit and push changes
-                  run: |
-                    git config --local user.email "action@github.com"
-                    git config --local user.name "GitHub Action"
-                    git add manifest.json
-                    git commit -m "Update manifest.json"
-                    git push
+'on':
+  push:
+    paths:
+      - safezone/**
+  jobs:
+    generate-manifest: null
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Generate manifest
+        run: node generateManifest.js
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add manifest.json
+          git commit -m "Update manifest.json"
+          git push
