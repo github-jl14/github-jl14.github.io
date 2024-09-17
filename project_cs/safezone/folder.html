@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> </title>
+    <title>Folder Index</title>
     <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
         .login-box, .content-box { text-align: center; margin-top: 50px; }
@@ -92,81 +92,89 @@
 </div>
 
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const folderName = urlParams.get('name');
-    
-    document.getElementById('folderName').innerText = folderName;
+const urlParams = new URLSearchParams(window.location.search);
+const folderName = urlParams.get('name');
 
-    function cleanKey(key) {
-        return key.replace(/[\r\n]+/gm, '').trim();
-    }
+document.getElementById('folderName').innerText = folderName;
 
-    function login() {
-        const enteredKey = cleanKey(document.getElementById('accessKey').value);
+function cleanKey(key) {
+    return key.replace(/[\r\n]+/gm, '').trim();
+}
 
-        fetch(`../ans/keys/${folderName}.txt`)
-            .then(response => response.text())
-            .then(correctKey => {
-                const cleanCorrectKey = cleanKey(correctKey);
+function login() {
+    const enteredKey = cleanKey(document.getElementById('accessKey').value);
 
-                if (enteredKey === cleanCorrectKey) {
-                    displayFolderContents(folderName);
-                    document.getElementById("header").innerText = `Answers inside /${folderName}`
-                } else {
-                    alert('Invalid access key!');
-                }
-            });
-    }
+    fetch(`../ans/keys/${folderName}.txt`)
+        .then(response => response.text())
+        .then(correctKey => {
+            const cleanCorrectKey = cleanKey(correctKey);
 
-    function displayFolderContents(folderName) {
-        document.querySelector('.login-box').style.display = 'none';
-        document.querySelector('.content-box').style.display = 'block';
-        document.querySelector('.image-grid').style.display = 'flex';
-        document.querySelector('.notice').style.display = 'block';
-
-        const images = ["pic.jpg", "pic2.jpg", "pic3.jpg"];  // Replace with actual filenames
-        const imageGrid = document.getElementById('imageGrid');
-        
-        imageGrid.innerHTML = ''; // Clear any existing images
-
-        images.forEach((img, index) => {
-            const imgElem = document.createElement('img');
-            imgElem.src = `${folderName}/${img}`;
-            imgElem.onclick = () => openModal(index);  // Set click event to open the modal
-            imageGrid.appendChild(imgElem);
+            if (enteredKey === cleanCorrectKey) {
+                displayFolderContents(folderName);
+                document.getElementById("header").innerText = `Answers inside /${folderName}`;
+            } else {
+                alert('Invalid access key!');
+            }
         });
+}
 
-        fetch(`${folderName}/notice.txt`)
-            .then(response => response.text())
-            .then(text => {
-                document.getElementById('notice').innerText = text;
+function displayFolderContents(folderName) {
+    document.querySelector('.login-box').style.display = 'none';
+    document.querySelector('.content-box').style.display = 'block';
+    document.querySelector('.image-grid').style.display = 'flex';
+    document.querySelector('.notice').style.display = 'block';
+
+    // Fetch the manifest.json file
+    fetch('manifest.json')
+        .then(response => response.json())
+        .then(data => {
+            const images = data[folderName] || []; // Get image filenames from the manifest
+            const imageGrid = document.getElementById('imageGrid');
+            
+            imageGrid.innerHTML = ''; // Clear any existing images
+
+            images.forEach((img, index) => {
+                const imgElem = document.createElement('img');
+                imgElem.src = `${folderName}/${img}`;
+                imgElem.onclick = () => openModal(index);  // Set click event to open the modal
+                imageGrid.appendChild(imgElem);
             });
-    }
 
-    // Modal functionality
-    let currentImageIndex = 0;
-    const images = ["pic.jpg", "pic2.jpg", "pic3.jpg"];  // Replace with actual filenames. Hardcoded file names coz Github doesn't have dynamic logics
+            fetch(`${folderName}/notice.txt`)
+                .then(response => response.text())
+                .then(text => {
+                    document.getElementById('notice').innerText = text;
+                });
+        })
+        .catch(error => {
+            console.error('Error loading manifest:', error);
+        });
+}
 
-    function openModal(index) {
-        currentImageIndex = index;
-        document.getElementById('modalImage').src = `${folderName}/${images[currentImageIndex]}`;
-        document.getElementById('myModal').style.display = 'flex';
-    }
+// Modal functionality
+let currentImageIndex = 0;
+let images = [];  // Initialize with an empty array
 
-    function closeModal() {
-        document.getElementById('myModal').style.display = 'none';
-    }
+function openModal(index) {
+    currentImageIndex = index;
+    document.getElementById('modalImage').src = `${folderName}/${images[currentImageIndex]}`;
+    document.getElementById('myModal').style.display = 'flex';
+}
 
-    function changeImage(direction) {
-        currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
-        document.getElementById('modalImage').src = `${folderName}/${images[currentImageIndex]}`;
-    }
+function closeModal() {
+    document.getElementById('myModal').style.display = 'none';
+}
 
-    window.onclick = function(event) {
-        if (event.target === document.getElementById('myModal')) {
-            closeModal();
-        }
+function changeImage(direction) {
+    currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
+    document.getElementById('modalImage').src = `${folderName}/${images[currentImageIndex]}`;
+}
+
+window.onclick = function(event) {
+    if (event.target === document.getElementById('myModal')) {
+        closeModal();
     }
+}
 </script>
 
 </body>

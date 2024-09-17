@@ -22,5 +22,6 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add manifest.json
+          git add folder-manifest.json
           git commit -m "Update manifest.json"
           git push
