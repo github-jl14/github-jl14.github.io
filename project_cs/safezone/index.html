@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safezone - Trigger Server Workflow</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { padding: 10px 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+  <a href="https://github-jl14.github.io/project_cs">Home</a>
+  <br>
+  <br>
+  
+    <h1>Trigger Server-Side Workflow</h1>
+    <button id="triggerButton">Update Manifest</button>
+
+    <script>
+        document.getElementById('triggerButton').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/update-manifest', { method: 'POST' });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const result = await response.json();
+                alert('Manifest updated: ' + result.message);
+            } catch (error) {
+                console.error('Error triggering server workflow:', error);
+            }
+        });
+    </script>
+</body>
+</html>

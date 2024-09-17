@@ -1,181 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Folder Index</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .login-box, .content-box { text-align: center; margin-top: 50px; }
-        input[type="text"] { padding: 10px; width: 80%; margin-bottom: 10px; }
-        button { padding: 10px 20px; cursor: pointer; }
-        .image-grid { display: none; flex-wrap: wrap; gap: 10px; }
-        .image-grid img { width: 200px; height: 150px; object-fit: cover; cursor: pointer; }
-        .notice { margin-top: 20px; padding: 10px; border: 1px solid #ccc; display: none; }
 
-        /* Modal styles */
-        .modal { 
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
-            left: 0; 
-            top: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.8); 
-            justify-content: center; 
-            align-items: center;
-        }
-        .modal-content { 
-            position: relative; 
-            max-width: 90vw; 
-            max-height: 90vh; 
-            margin: auto; 
-            background: #fff;
-        }
-        .modal-content img { 
-            width: 100%; 
-            height: auto; 
-        }
-        .close { 
-            position: absolute; 
-            top: 10px; 
-            right: 25px; 
-            color: #fff; 
-            font-size: 35px; 
-            font-weight: bold; 
-            cursor: pointer;
-        }
-        .modal-content button { 
-            position: absolute; 
-            top: 50%; 
-            background: rgba(0,0,0,0.6); 
-            color: #fff; 
-            border: none; 
-            padding: 10px; 
-            cursor: pointer;
-        }
-        .prev { 
-            left: 0;
-            position: absolute;
-            opacity: 50%;
-        }
-        .next { 
-            right: -5; 
-            opacity: 50%;
-        }
-    </style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folder Index</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #282c34;
+      color: #61dafb;
+      font-family: 'Inconsolata', monospace;
+      /* Apply Inconsolata font */
+      text-align: center;
+      padding: 20px;
+    }
+
+    #messageContainer {
+      font-size: 1.5rem;
+    }
+
+    a {
+      color: #61dafb;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+
+    .login-box,
+    .content-box {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 80%;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .image-grid {
+      display: none;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .image-grid img {
+      width: 200px;
+      height: 150px;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .notice {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      display: none;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      margin: auto;
+      background: #fff;
+    }
+
+    .modal-content img {
+      width: 100%;
+      height: auto;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 25px;
+      color: #fff;
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-content button {
+      position: absolute;
+      top: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .prev {
+      left: 0;
+      position: absolute;
+      opacity: 50%;
+    }
+
+    .next {
+      right: -5;
+      opacity: 50%;
+    }
+  </style>
 </head>
+
 <body>
 
-<h1><p id="header">Enter Access Key</p></h1>
-<div class="login-box">
+  <a href="https://github-jl14.github.io/project_cs">Home</a>
+  <br>
+  <br>
+
+  <h1>
+    <p id="header">Enter Access Key</p>
+  </h1>
+  <div class="login-box">
     <input type="number" id="accessKey" placeholder="7-character key">
     <button onclick="login()">Submit</button>
-</div>
+  </div>
 
-<div class="content-box">
+  <div class="content-box">
     <h2>Folder: <span id="folderName"></span></h2>
     <div class="image-grid" id="imageGrid"></div>
     <div class="notice" id="notice"></div>
-</div>
+  </div>
 
-<!-- Modal for images -->
-<div id="myModal" class="modal">
+  <!-- Modal for images -->
+  <div id="myModal" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <button class="prev" onclick="changeImage(-1)">&#10094;</button>
-        <img id="modalImage" src="">
-        <button class="next" onclick="changeImage(1)">&#10095;</button>
+      <span class="close" onclick="closeModal()">&times;</span>
+      <button class="prev" onclick="changeImage(-1)">&#10094;</button>
+      <img id="modalImage" src="">
+      <button class="next" onclick="changeImage(1)">&#10095;</button>
     </div>
-</div>
+  </div>
 
-<script>
-const urlParams = new URLSearchParams(window.location.search);
-const folderName = urlParams.get('name');
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const folderName = urlParams.get('name');
 
-document.getElementById('folderName').innerText = folderName;
+    document.addEventListener('DOMContentLoaded', () => {
+      // Example condition
+      const fileName = ""; // Replace with your actual condition
 
-function cleanKey(key) {
-    return key.replace(/[\r\n]+/gm, '').trim();
-}
+      if (fileName === "") {
+        // Dynamically add the font link
+        const link = document.createElement('link');
+        link.rel = 'preconnect';
+        link.href = 'https://fonts.googleapis.com';
+        document.head.appendChild(link);
 
-function login() {
-    const enteredKey = cleanKey(document.getElementById('accessKey').value);
+        const link2 = document.createElement('link');
+        link2.rel = 'preconnect';
+        link2.href = 'https://fonts.gstatic.com';
+        link2.crossOrigin = 'anonymous';
+        document.head.appendChild(link2);
 
-    fetch("../ans/keys/workflow-test.txt")
+        const fontLink = document.createElement('link');
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap';
+        fontLink.rel = 'stylesheet';
+        document.head.appendChild(fontLink);
+
+        // Apply styles directly to the body
+        document.body.style.display = 'flex';
+        document.body.style.justifyContent = 'center';
+        document.body.style.alignItems = 'center';
+        document.body.style.height = '100vh';
+        document.body.style.margin = '0';
+        document.body.style.backgroundColor = '#282c34';
+        document.body.style.color = '#61dafb';
+        document.body.style.fontFamily = "'Inconsolata', monospace";
+
+        // Create the message container
+        const messageContainer = document.createElement('div');
+        messageContainer.style.fontSize = '1.5rem';
+        messageContainer.style.textAlign = 'center';
+        messageContainer.innerHTML = `
+            Seems like you are missing a token.
+            <br>
+            <a href="https://github-jl14.github.io/project_cs" style="
+                color: #61dafb;
+                text-decoration: none;
+                font-weight: bold;
+            ">Go to /project_cs</a>
+        `;
+
+        // Append the message container to the body
+        document.body.innerHTML = "";
+        document.body.appendChild(messageContainer);
+
+        // Add additional styling for hover effect using JavaScript
+        const style = document.createElement('style');
+        style.textContent = `
+            a:hover {
+                text-decoration: underline;
+            }
+        `;
+        document.head.appendChild(style);
+      }
+    });
+
+    document.getElementById('folderName').innerText = folderName;
+
+    function cleanKey(key) {
+      return key.replace(/[\r\n]+/gm, '').trim();
+    }
+
+    function login() {
+      const enteredKey = cleanKey(document.getElementById('accessKey').value);
+
+      fetch("../ans/keys/workflow-test.txt")
         .then(response => response.text())
         .then(correctKey => {
-            const cleanCorrectKey = cleanKey(correctKey);
+          const cleanCorrectKey = cleanKey(correctKey);
 
-            if (enteredKey === cleanCorrectKey) {
-                displayFolderContents(folderName);
-                document.getElementById("header").innerText = `Answers inside /${folderName}`;
-            } else {
-                alert('Invalid access key!');
-            }
+          if (enteredKey === cleanCorrectKey) {
+            displayFolderContents(folderName);
+            document.getElementById("header").innerText = `Answers inside /${folderName}`;
+          } else {
+            alert('Invalid access key!');
+          }
         });
-}
+    }
 
-function displayFolderContents(folderName) {
-    document.querySelector('.login-box').style.display = 'none';
-    document.querySelector('.content-box').style.display = 'block';
-    document.querySelector('.image-grid').style.display = 'flex';
-    document.querySelector('.notice').style.display = 'block';
+    function displayFolderContents(folderName) {
+      document.querySelector('.login-box').style.display = 'none';
+      document.querySelector('.content-box').style.display = 'block';
+      document.querySelector('.image-grid').style.display = 'flex';
+      document.querySelector('.notice').style.display = 'block';
 
-    // Fetch the manifest.json file
-    fetch('/manifest.json')
+      // Fetch the manifest.json file
+      fetch('/manifest.json')
         .then(response => response.json())
         .then(data => {
-            const images = data[folderName] || []; // Get image filenames from the manifest
-            const imageGrid = document.getElementById('imageGrid');
-            
-            imageGrid.innerHTML = ''; // Clear any existing images
+          const images = data[folderName] || []; // Get image filenames from the manifest
+          const imageGrid = document.getElementById('imageGrid');
 
-            images.forEach((img, index) => {
-                const imgElem = document.createElement('img');
-                imgElem.src = `${folderName}/${img}`;
-                imgElem.onclick = () => openModal(index);  // Set click event to open the modal
-                imageGrid.appendChild(imgElem);
+          imageGrid.innerHTML = ''; // Clear any existing images
+
+          images.forEach((img, index) => {
+            const imgElem = document.createElement('img');
+            imgElem.src = `${folderName}/${img}`;
+            imgElem.onclick = () => openModal(index); // Set click event to open the modal
+            imageGrid.appendChild(imgElem);
+          });
+
+          fetch(`${folderName}/notice.txt`)
+            .then(response => response.text())
+            .then(text => {
+              document.getElementById('notice').innerText = text;
             });
-
-            fetch(`${folderName}/notice.txt`)
-                .then(response => response.text())
-                .then(text => {
-                    document.getElementById('notice').innerText = text;
-                });
         })
         .catch(error => {
-            console.error('Error loading manifest:', error);
+          console.error('Error loading manifest:', error);
         });
-}
-
-// Modal functionality
-let currentImageIndex = 0;
-let images = [];  // Initialize with an empty array
-
-function openModal(index) {
-    currentImageIndex = index;
-    document.getElementById('modalImage').src = `${folderName}/${images[currentImageIndex]}`;
-    document.getElementById('myModal').style.display = 'flex';
-}
-
-function closeModal() {
-    document.getElementById('myModal').style.display = 'none';
-}
-
-function changeImage(direction) {
-    currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
-    document.getElementById('modalImage').src = `${folderName}/${images[currentImageIndex]}`;
-}
-
-window.onclick = function(event) {
-    if (event.target === document.getElementById('myModal')) {
-        closeModal();
     }
-}
-</script>
+
+    // Modal functionality
+    let currentImageIndex = 0;
+    let images = []; // Initialize with an empty array
+
+    function openModal(index) {
+      currentImageIndex = index;
+      document.getElementById('modalImage').src = `${folderName}/${images[currentImageIndex]}`;
+      document.getElementById('myModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('myModal').style.display = 'none';
+    }
+
+    function changeImage(direction) {
+      currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
+      document.getElementById('modalImage').src = `${folderName}/${images[currentImageIndex]}`;
+    }
+
+    window.onclick = function(event) {
+      if (event.target === document.getElementById('myModal')) {
+        closeModal();
+      }
+    }
+  </script>
 
 </body>
+
 </html>
