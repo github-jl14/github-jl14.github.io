@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // The main directory where all image folders are stored (safezone)
-const baseDir = path.join(__dirname, 'safezone');
+const baseDir = path.join(__dirname, 'project_cs/safezone');
 const manifestFile = path.join(__dirname, 'manifest.json');
 
 // Function to recursively get all .jpg files grouped by their folder names
