@@ -4,26 +4,22 @@ const path = require('path');
 // The main directory where all image folders are stored (safezone)
 const baseDir = path.join(__dirname, 'project_cs/safezone');
 const manifestFile = path.join(__dirname, 'manifest.json');
+const folderManifestFile = path.join(__dirname, 'folder-manifest.json');
 
 // Function to recursively get all .jpg files grouped by their folder names
 function getJpgFilesGroupedByFolder(dir) {
   const manifest = {};
-
-  // Read all items in the current directory
   const folders = fs.readdirSync(dir);
 
-  // Loop through each folder
   folders.forEach(folder => {
     const fullFolderPath = path.join(dir, folder);
     const stat = fs.statSync(fullFolderPath);
 
     if (stat.isDirectory()) {
-      // Get all .jpg files in the current folder
       const jpgFiles = fs.readdirSync(fullFolderPath).filter(file => file.endsWith('.jpg'));
 
-      // If there are jpg files, add them under the folder's name
       if (jpgFiles.length > 0) {
-        manifest[folder] = jpgFiles; // Add the list of images to this folder key
+        manifest[folder] = jpgFiles;
       }
     }
   });
@@ -31,10 +27,29 @@ function getJpgFilesGroupedByFolder(dir) {
   return manifest;
 }
 
-// Get all .jpg files grouped by folder name from the baseDir
-const jpgFilesByFolder = getJpgFilesGroupedByFolder(baseDir);
+// Function to get all folder names
+function getFolderNames(dir) {
+  const folderNames = [];
+  const folders = fs.readdirSync(dir);
 
-// Write the manifest.json
+  folders.forEach(folder => {
+    const fullFolderPath = path.join(dir, folder);
+    const stat = fs.statSync(fullFolderPath);
+
+    if (stat.isDirectory()) {
+      folderNames.push(folder);
+    }
+  });
+
+  return folderNames;
+}
+
+// Generate the image manifest
+const jpgFilesByFolder = getJpgFilesGroupedByFolder(baseDir);
 fs.writeFileSync(manifestFile, JSON.stringify(jpgFilesByFolder, null, 2));
 
-console.log('manifest.json updated successfully!');
+// Generate the folder manifest
+const folderNames = getFolderNames(baseDir);
+fs.writeFileSync(folderManifestFile, JSON.stringify({ folders: folderNames }, null, 2));
+
+console.log('manifest.json and folder-manifest.json updated successfully!');
