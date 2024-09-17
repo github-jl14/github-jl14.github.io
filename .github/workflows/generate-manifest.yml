@@ -2,7 +2,7 @@ name: Generate Manifest
 on:
   push:
     paths:
-      - safezone/**
+      - project-cs/safezone/**
 jobs:
   generate-manifest:
     runs-on: ubuntu-latest
