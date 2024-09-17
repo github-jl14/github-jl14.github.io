@@ -1,0 +1,6 @@
+{
+  "name": "manifest-generator",
+  "version": "1.0.0",
+  "main": "generateManifest.js",
+  "dependencies": {}
+}
