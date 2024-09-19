@@ -182,8 +182,21 @@
     function login() {
       const enteredKey = cleanKey(document.getElementById('accessKey').value);
 
-      fetch("../ans/keys/workflow-test.txt")
-        .then(response => response.text())
+      // Attempt to fetch the key file for the specified folder
+      fetch(`../ans/keys/${folderName}.txt`)
+        .then(response => {
+          // If the folder key file doesn't exist, fetch 'default.txt' instead
+          if (!response.ok) {
+            console.warn(`Key file for ${folderName} not found. Fetching 'default.txt' instead.`);
+            return fetch('../ans/keys/default.txt').then(defaultResponse => {
+              if (!defaultResponse.ok) {
+                throw new Error('Default key file is also missing!');
+              }
+              return defaultResponse.text();
+            });
+          }
+          return response.text();
+        })
         .then(correctKey => {
           const cleanCorrectKey = cleanKey(correctKey);
 
@@ -198,7 +211,7 @@
         })
         .catch(error => {
           console.error('Error fetching the key:', error);
-          alert('Error fetching the access key!');
+          alert('Error fetching the default access key!');
         });
     }
 
@@ -218,7 +231,7 @@
             imgElem.src = `${folderName}/${img}`;
             imgElem.onclick = () => openModal(index); // Set click event to open the modal
             imageGrid.appendChild(imgElem);
-            
+
             return images;
           });
 
@@ -235,7 +248,7 @@
 
     // Modal functionality
     let currentImageIndex = 0;
-    
+
 
     function openModal(index) {
       images = Array.from(document.querySelectorAll('.image-grid img')).map(img => img.src);

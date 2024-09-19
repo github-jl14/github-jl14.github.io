@@ -1,0 +1,14 @@
+Date/Time Uploaded: 09/19/24  23:00:00 (estimate)
+
+Total Images: 8
+----------
+1st: the longest possible solution
+2nd: 1 to 3 (shortest possible solution)
+3rd: 4 to 5
+4th to 8th: individual solution per numbers
+----------
+
+
+well, i did these for 1hr on paper only to realize i was dumb to do the longest possible technique. (i'm tired :/)
+
+(questions are based of the Math 10 book)
