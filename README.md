@@ -5,6 +5,6 @@
 
   https://github-jl14.github.io/integers
 
-- Project CS (Communist System)
+- Project CS
 
   https://github-jl14.github.io/project_cs
